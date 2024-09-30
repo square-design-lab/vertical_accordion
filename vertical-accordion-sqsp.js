@@ -11,8 +11,11 @@ $(document).ready(function () {
                 var accordionWrapper = $('<div>', { class: 'accordion__wrapper' });
                 accordionDiv.append(accordionWrapper);
 
+                accordionWrapper.css('visibility', 'hidden');
+
                 $.get(contentSource, function (data) {
                     var gridItems = $(data).find('#gridThumbs .grid-item');
+                    var panelToExpand = null;
                     var processedItems = 0;
                     var panels = [];
                     var maxHeight = 0;
@@ -27,9 +30,10 @@ $(document).ready(function () {
                         var portfolioTitle = gridItem.find('.portfolio-title').text();
 
                         var accordionPanel = $('<div>', { class: 'accordion__panel' });
-                        var button = $('<h1>', {class: 'accordion__button-wrapper'}).append($('<button>', {class: 'accordion__button', text: portfolioTitle}).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
+                        var button = $('<h1>', {class: 'accordion__button-wrapper'}).append($('<button>', {class: 'accordion__button', text: portfolioTitle}).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
 
-                        var contentWrapper = $('<div>', { class: 'accordion__content-wrapper', style: 'width: 0;' });
+
+                        var contentWrapper = $('<div>', { class: 'accordion__content-wrapper' });
                         var contentDiv = $('<div>', { class: 'accordion__content' });
 
                         contentWrapper.append(contentDiv);
@@ -41,7 +45,6 @@ $(document).ready(function () {
                             var articleContent = $(portfolioData).find('#sections');
                             contentDiv.html(articleContent);
 
-                            // Pre-calculate the height
                             var hiddenDiv = $('<div>', { style: 'visibility:hidden; position:absolute; top:-9999px;' });
                             hiddenDiv.append(articleContent.clone());
                             $('body').append(hiddenDiv);
@@ -53,7 +56,7 @@ $(document).ready(function () {
 
                             contentWrapper.css({
                                 'height': calculatedHeight + 'px',
-                                'display': 'block'
+                                'display': 'none'
                             });
 
                             panels.push({ panel: accordionPanel, height: calculatedHeight });
@@ -104,10 +107,11 @@ $(document).ready(function () {
         if (panelToExpand) {
             panelToExpand.addClass('active');
             var actualPanelContent = panelToExpand.find('.accordion__content-wrapper');
-            actualPanelContent.css('width', '100%'); // Set the full width for the active panel
+            actualPanelContent.show();
+            
             var actualHeight = actualPanelContent.outerHeight(true);
             accordionDiv.css({
-                'max-height': '80vh',
+                'max-height': '90vh',
                 'height': actualHeight + 'px'
             });
             accordionWrapper.css('visibility', 'visible');
@@ -126,14 +130,12 @@ $(document).ready(function () {
                     var currentPanel = $(this);
                     currentPanel.removeClass('active');
                     var contentWrapperToHide = currentPanel.find('.accordion__content-wrapper');
-                    contentWrapperToHide.css('width', '0'); // Collapse the content panel
+                    contentWrapperToHide.hide();
                 });
 
                 clickedPanel.addClass('active');
                 var contentWrapper = clickedPanel.find('.accordion__content-wrapper');
-                contentWrapper.animate({
-    width: '100%'
-}, 1000, 'swing');  
+                contentWrapper.show();  
                 var newHeight = contentWrapper.outerHeight(true);
                 accordionDiv.animate({ height: newHeight }, 500, 'swing');
             }
@@ -187,7 +189,7 @@ $(document).ready(function () {
                         var projectUrl = gridItem.attr('href');
                         var portfolioTitle = gridItem.find('.portfolio-title').text();
                         var accordionPanel = $('<div>', { class: 'accordion__panel' });
-                        var button = $('<h1>', {class: 'accordion__button-wrapper'}).append($('<button>', {class: 'accordion__button', text: portfolioTitle}).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
+                         var button = $('<h1>', {class: 'accordion__button-wrapper'}).append($('<button>', {class: 'accordion__button', text: portfolioTitle}).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
                         var contentWrapper = $('<div>', { class: 'accordion__content-wrapper' });
                         var contentDiv = $('<div>', { class: 'accordion__content' });
                         contentWrapper.append(contentDiv);
@@ -198,16 +200,46 @@ $(document).ready(function () {
                             var articleContent = $(portfolioData).find('#sections');
                             contentDiv.html(articleContent);
                         });
+
+                        if (index + 1 === openSlide) {
+                            panelToExpand = contentWrapper;
+                            button.addClass('active');
+                            accordionPanel.addClass('active');
+                        }
+
+                        button.on('click', function () {
+                           if (!contentWrapper.is(':visible')) {
+                              accordionWrapper.find('.accordion__panel .accordion__content-wrapper').slideUp();
+                            accordionWrapper.find('.accordion__panel').removeClass('active');
+                            accordionWrapper.find('.accordion__panel .accordion__button').removeClass('active');
+                            contentWrapper.slideDown();
+                            accordionPanel.addClass('active');
+                            button.addClass('active');
+                        } 
+                        });
                     });
+
+                    if (panelToExpand) {
+                        panelToExpand.show();
+                    }
                 });
             }
         });
     }
 
-    // Detect screen size and load the appropriate accordion
-    if (window.innerWidth > 768) {
-        initializeDesktopAccordion();
-    } else {
-        initializeMobileAccordion();
+    function checkScreenSizeAndInitialize() {
+        if ($(window).width() > 767) {
+            initializeDesktopAccordion();
+        } else {
+            initializeMobileAccordion();
+        }
     }
+
+    checkScreenSizeAndInitialize();
+
+    $(window).resize(function () {
+        $('.accordion__wrapper').remove();  
+        checkScreenSizeAndInitialize();
+    });
+
 });
