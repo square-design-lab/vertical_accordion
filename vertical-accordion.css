@@ -109,7 +109,6 @@
     }
     [data-sdl-plugin="vertical-accordion"] .accordion__content-wrapper {
         width: 0px;
-        /* transition: width 500ms ease; */
     }
     [data-sdl-plugin="vertical-accordion"] .accordion__panel.active .accordion__content-wrapper {
         overflow-y: auto;
