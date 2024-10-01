@@ -18,7 +18,7 @@
     .accordion__button {
         writing-mode: vertical-lr;
         text-align: center;
-        width: var(--va-button-accordion-button-width);
+        width: var(--va-desktop-accordion-button-width);
         background-color: var(--va-button-background);
         padding: 0;
         border: none;
@@ -76,7 +76,7 @@
         z-index: 3;
     }
     .accordion__panel.active .accordion__content-wrapper {
-        width: calc(100% - var(--va-accordion-button-width));
+        width: calc(100% - var(--va-desktop-accordion-button-width));
         /* transition: width 2s ease; */
     }
     .accordion__content {
@@ -155,7 +155,7 @@
         font-size: var(--va-button-mobile-font-size);
         line-height: 0 !important;
         margin: 0 !important;
-        height: var(--va-accordion-button-width);
+        height: var(--va-mobile-accordion-button-width);
         color: var(--va-accordion-button-color);
         padding: 0 0.5rem;
     }
