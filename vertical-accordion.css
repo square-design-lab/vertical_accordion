@@ -18,7 +18,7 @@
     .accordion__button {
         writing-mode: vertical-lr;
         text-align: center;
-        width: var(--va-accordion-button-width);
+        width: var(--va-button-accordion-button-width);
         background-color: var(--va-button-background);
         padding: 0;
         border: none;
