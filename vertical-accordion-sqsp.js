@@ -3,11 +3,13 @@ $(document).ready(function () {
         $('.page-section').each(function () {
             var section = $(this);
             var accordionDiv = section.find('[data-sdl-plugin="vertical-accordion"][data-content-source]');
+            accordionDiv.empty(); 
+            accordionDiv.addClass("vertical-accordion");
 
             if (accordionDiv.length > 0) {
                 var contentSource = accordionDiv.data('content-source');
-                var openSlideAttr = accordionDiv.data('open-slide') || 2; 
-                var slidesCount = accordionDiv.data('slides-count') || null; 
+                var openSlideAttr = accordionDiv.data('open-slide') || 2;
+                var slidesCount = accordionDiv.data('slides-count') || null;
                 var accordionWrapper = $('<div>', { class: 'accordion__wrapper' });
                 accordionDiv.append(accordionWrapper);
 
@@ -15,10 +17,10 @@ $(document).ready(function () {
 
                 $.get(contentSource, function (data) {
                     var gridItems = $(data).find('#gridThumbs .grid-item');
-                    var panelToExpand = null;
                     var processedItems = 0;
-                    var panels = [];
                     var maxHeight = 0;
+                    var tallestPanel = null;
+                    var buttonMaxHeight = 0;
 
                     if (slidesCount) {
                         gridItems = gridItems.slice(0, slidesCount);
@@ -30,12 +32,21 @@ $(document).ready(function () {
                         var portfolioTitle = gridItem.find('.portfolio-title').text();
 
                         var accordionPanel = $('<div>', { class: 'accordion__panel' });
-                        var button = $('<h1>', {class: 'accordion__button-wrapper'}).append($('<button>', {class: 'accordion__button', text: portfolioTitle}).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
 
+                        var button = $('<div>', { class: 'accordion__button-wrapper' })
+                            .append(
+                                $('<div>', { class: 'accordion__button', style: 'white-space: nowrap;' })
+                                    .append(
+                                        $('<h1>', { class: 'accordion__button-text' }).text(portfolioTitle)
+                                    )
+                            )
+                            .append(
+                                $('<div>', { class: 'accordion__arrow' })
+                                    .html('<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg>')
+                            );
 
                         var contentWrapper = $('<div>', { class: 'accordion__content-wrapper' });
                         var contentDiv = $('<div>', { class: 'accordion__content' });
-
                         contentWrapper.append(contentDiv);
                         accordionPanel.append(button);
                         accordionPanel.append(contentWrapper);
@@ -48,23 +59,40 @@ $(document).ready(function () {
                             var hiddenDiv = $('<div>', { style: 'visibility:hidden; position:absolute; top:-9999px;' });
                             hiddenDiv.append(articleContent.clone());
                             $('body').append(hiddenDiv);
-
                             var calculatedHeight = hiddenDiv.outerHeight(true);
                             hiddenDiv.remove();
 
-                            maxHeight = Math.max(maxHeight, calculatedHeight);
+                            var buttonHeight = button.find('.accordion__button').outerHeight(true);
+                            var arrowHeight = button.find('.accordion__arrow').outerHeight(true);
+                            var totalButtonHeight = buttonHeight + arrowHeight;
+
+                            buttonMaxHeight = Math.max(buttonMaxHeight, totalButtonHeight);
+
+                            console.log(`Height of #sections for panel ${index + 1}: ${calculatedHeight}px`);
+                            console.log(`Total height of button for panel ${index + 1}: ${totalButtonHeight}px`);
+
+                            if (calculatedHeight < contentWrapper.outerHeight(true)) {
+                                contentDiv.css('height', '100%');
+                            }
+
+                            if (calculatedHeight > maxHeight) {
+                                maxHeight = calculatedHeight;
+                                tallestPanel = accordionPanel;
+                            }
 
                             contentWrapper.css({
                                 'height': calculatedHeight + 'px',
                                 'display': 'none'
                             });
 
-                            panels.push({ panel: accordionPanel, height: calculatedHeight });
                             processedItems++;
 
                             if (processedItems === gridItems.length) {
                                 setTimeout(function () {
-                                    arrangePanels(panels, accordionWrapper, maxHeight, openSlideAttr, accordionDiv);
+                                    if (tallestPanel) {
+                                        tallestPanel.addClass('tallest-accordion-panel');
+                                    }
+                                    setAccordionHeight(accordionWrapper, maxHeight, buttonMaxHeight, openSlideAttr, accordionDiv);
                                     bindAccordionClickEvents(accordionWrapper, accordionDiv);
                                     $(window).on('resize', function () {
                                         resizeAccordion(section);
@@ -78,50 +106,72 @@ $(document).ready(function () {
         });
     }
 
-    function arrangePanels(panels, accordionWrapper, maxHeight, openSlideAttr, accordionDiv) {
-        panels.sort(function (a, b) {
-            return b.height - a.height;
+    function setAccordionHeight(accordionWrapper, maxHeight, buttonMaxHeight, openSlideAttr, accordionDiv) {
+        accordionWrapper.find('.accordion__panel').each(function (index) {
+            var panel = $(this);
+            var contentWrapper = panel.find('.accordion__content-wrapper');
+            var panelHeight = Math.max(maxHeight, buttonMaxHeight);
+            contentWrapper.css('height', panelHeight + 'px');
+            var contentWrapperHeight = contentWrapper.outerHeight(true);
+
+            var hiddenDiv = $('<div>', { style: 'visibility:hidden; position:absolute; top:-9999px;' });
+            hiddenDiv.append(panel.find('.accordion__content').clone());
+            $('body').append(hiddenDiv);
+            var contentHeight = hiddenDiv.outerHeight(true);
+            hiddenDiv.remove();
+
+            var adjustedMaxHeight = Math.max(contentHeight, buttonMaxHeight);
+            var accordionMaxHeight = $(window).height() * 0.9;
+
+            if (buttonMaxHeight > maxHeight && buttonMaxHeight > accordionMaxHeight) {
+                accordionDiv.css({ 'max-height': buttonMaxHeight + 'px', 'height': buttonMaxHeight + 'px' });
+                contentWrapper.css({ 'height': buttonMaxHeight + 'px', 'max-height': buttonMaxHeight + 'px' });
+            } else if (buttonMaxHeight > maxHeight && buttonMaxHeight < accordionMaxHeight) {
+                accordionDiv.css({ 'max-height': '90vh', 'height': buttonMaxHeight + 'px' });
+                contentWrapper.css({ 'height': buttonMaxHeight + 'px', 'max-height': buttonMaxHeight + 'px' });
+            } else if (buttonMaxHeight < maxHeight && buttonMaxHeight > accordionMaxHeight) {
+                accordionDiv.css({ 'max-height': buttonMaxHeight + 'px', 'height': maxHeight + 'px' });
+                contentWrapper.css({ 'height': maxHeight + 'px', 'max-height': maxHeight + 'px' });
+                if (Math.ceil(contentHeight) <= Math.ceil(contentWrapperHeight)) {
+                    panel.find('.accordion__content').css({
+                        'height': '100%',
+                        'max-height': buttonMaxHeight
+                    });
+                } else {
+                    panel.find('.accordion__content').css({
+                        'height': buttonMaxHeight,
+                        'max-height': '100%'
+                    });
+                }
+            } else {
+                accordionDiv.css({ 'max-height': '90vh', 'height': maxHeight + 'px' });
+                contentWrapper.css({ 'height': maxHeight + 'px', 'max-height': maxHeight + 'px' });
+                if (Math.ceil(contentHeight) <= Math.ceil(contentWrapperHeight)) {
+                    panel.find('.accordion__content').css({
+                        'height': '100%',
+                        'max-height': '90vh'
+                    });
+                } else {
+                    panel.find('.accordion__content').css({
+                        'height': 'auto',
+                        'max-height': '100%'
+                    });
+                }
+            }
+
+            if (index + 1 === openSlideAttr) {
+                panel.addClass('active');
+                contentWrapper.show();
+            } else {
+                contentWrapper.hide();
+            }
         });
 
-        var allHeightsSame = panels.every(p => p.height === panels[0].height);
-        var panelToExpand;
-
-        if (allHeightsSame) {
-            panelToExpand = panels[1].panel;
-        } else {
-            var targetIndex = openSlideAttr - 1;
-            var maxHeightPanel = panels.shift();
-            panels.splice(targetIndex, 0, maxHeightPanel);
-            panelToExpand = panels[targetIndex].panel;
-        }
-
-        panels.forEach(function (item) {
-            item.panel.find('.accordion__content-wrapper').css('height', maxHeight + 'px');
-        });
-
-        accordionWrapper.empty();
-        panels.forEach(function (item) {
-            accordionWrapper.append(item.panel);
-        });
-
-        if (panelToExpand) {
-            panelToExpand.addClass('active');
-            var actualPanelContent = panelToExpand.find('.accordion__content-wrapper');
-            actualPanelContent.show();
-            
-            var actualHeight = actualPanelContent.outerHeight(true);
-            accordionDiv.css({
-                'max-height': '90vh',
-                'height': actualHeight + 'px'
-            });
-            accordionWrapper.css('visibility', 'visible');
-        } else {
-            accordionWrapper.css('visibility', 'visible');
-        }
+        accordionWrapper.css('visibility', 'visible');
     }
 
     function bindAccordionClickEvents(accordionWrapper, accordionDiv) {
-        accordionWrapper.find('.accordion__button').off('click').on('click', function () {
+        accordionWrapper.find('.accordion__button-wrapper').off('click').on('click', function () {
             var clickedPanel = $(this).closest('.accordion__panel');
             var isActive = clickedPanel.hasClass('active');
 
@@ -135,7 +185,7 @@ $(document).ready(function () {
 
                 clickedPanel.addClass('active');
                 var contentWrapper = clickedPanel.find('.accordion__content-wrapper');
-                contentWrapper.show();  
+                contentWrapper.show();
                 var newHeight = contentWrapper.outerHeight(true);
                 accordionDiv.animate({ height: newHeight }, 500, 'swing');
             }
@@ -148,6 +198,8 @@ $(document).ready(function () {
         var panels = accordionWrapper.find('.accordion__panel');
 
         var maxHeight = 0;
+        var buttonMaxHeight = 0;
+
         panels.each(function () {
             var contentWrapper = $(this).find('.accordion__content-wrapper');
             var hiddenDiv = $('<div>', { style: 'visibility:hidden; position:absolute; top:-9999px;' });
@@ -156,22 +208,25 @@ $(document).ready(function () {
             var calculatedHeight = hiddenDiv.outerHeight(true);
             hiddenDiv.remove();
             maxHeight = Math.max(maxHeight, calculatedHeight);
-            contentWrapper.css('height', calculatedHeight + 'px');
+
+            var buttonWrapper = $(this).find('.accordion__button-wrapper');
+            var button = buttonWrapper.find('.accordion__button');
+            button.css('white-space', 'nowrap');
+
+            buttonWrapper.css('width', '100%');
+            var buttonHeight = button.outerHeight(true);
+            var arrowHeight = buttonWrapper.find('.accordion__arrow').outerHeight(true);
+            buttonMaxHeight = Math.max(buttonMaxHeight, buttonHeight + arrowHeight);
         });
 
-        var activePanel = accordionWrapper.find('.accordion__panel.active');
-        if (activePanel.length > 0) {
-            var activeContent = activePanel.find('.accordion__content-wrapper');
-            var newHeight = activeContent.outerHeight(true);
-            accordionDiv.css('height', newHeight + 'px');
-        }
+        setAccordionHeight(accordionWrapper, maxHeight, buttonMaxHeight, accordionDiv.data('open-slide'), accordionDiv);
     }
 
-    // Function to initialize the mobile accordion
     function initializeMobileAccordion() {
         $('.page-section').each(function () {
             var section = $(this);
             var accordionDiv = section.find('[data-sdl-plugin="vertical-accordion"][data-content-source]');
+            accordionDiv.empty();
             if (accordionDiv.length > 0) {
                 var contentSource = accordionDiv.data('content-source');
                 var slidesCount = accordionDiv.data('slides-count') || null;
@@ -189,7 +244,7 @@ $(document).ready(function () {
                         var projectUrl = gridItem.attr('href');
                         var portfolioTitle = gridItem.find('.portfolio-title').text();
                         var accordionPanel = $('<div>', { class: 'accordion__panel' });
-                         var button = $('<h1>', {class: 'accordion__button-wrapper'}).append($('<button>', {class: 'accordion__button', text: portfolioTitle}).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
+                         var button = $('<h1>', { class: 'accordion__button-wrapper' }).append($('<button>', { class: 'accordion__button', text: portfolioTitle }).append('<span class="accordion__arrow"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg></span>'));
                         var contentWrapper = $('<div>', { class: 'accordion__content-wrapper' });
                         var contentDiv = $('<div>', { class: 'accordion__content' });
                         contentWrapper.append(contentDiv);
@@ -208,14 +263,14 @@ $(document).ready(function () {
                         }
 
                         button.on('click', function () {
-                           if (!contentWrapper.is(':visible')) {
-                              accordionWrapper.find('.accordion__panel .accordion__content-wrapper').slideUp();
-                            accordionWrapper.find('.accordion__panel').removeClass('active');
-                            accordionWrapper.find('.accordion__panel .accordion__button').removeClass('active');
-                            contentWrapper.slideDown();
-                            accordionPanel.addClass('active');
-                            button.addClass('active');
-                        } 
+                            if (!contentWrapper.is(':visible')) {
+                                accordionWrapper.find('.accordion__panel .accordion__content-wrapper').slideUp();
+                                accordionWrapper.find('.accordion__panel').removeClass('active');
+                                accordionWrapper.find('.accordion__panel .accordion__button').removeClass('active');
+                                contentWrapper.slideDown();
+                                accordionPanel.addClass('active');
+                                button.addClass('active');
+                            } 
                         });
                     });
 
@@ -226,11 +281,19 @@ $(document).ready(function () {
             }
         });
     }
+    
+    var isDesktopInitialized = false;
 
     function checkScreenSizeAndInitialize() {
         if ($(window).width() > 767) {
-            initializeDesktopAccordion();
+            if (!isDesktopInitialized) {
+                $('.accordion__wrapper').remove();
+                initializeDesktopAccordion();
+                isDesktopInitialized = true;
+            }
         } else {
+            isDesktopInitialized = false;
+            $('.accordion__wrapper').remove();
             initializeMobileAccordion();
         }
     }
@@ -238,8 +301,12 @@ $(document).ready(function () {
     checkScreenSizeAndInitialize();
 
     $(window).resize(function () {
-        $('.accordion__wrapper').remove();  
+        if ($(window).width() > 767) {
+            $('.page-section').each(function () {
+                resizeAccordion($(this));
+            });
+        }
+
         checkScreenSizeAndInitialize();
     });
-
 });
