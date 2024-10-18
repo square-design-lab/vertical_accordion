@@ -68,9 +68,6 @@ $(document).ready(function () {
 
                             buttonMaxHeight = Math.max(buttonMaxHeight, totalButtonHeight);
 
-                            console.log(`Height of #sections for panel ${index + 1}: ${calculatedHeight}px`);
-                            console.log(`Total height of button for panel ${index + 1}: ${totalButtonHeight}px`);
-
                             if (calculatedHeight < contentWrapper.outerHeight(true)) {
                                 contentDiv.css('height', '100%');
                             }
