@@ -6,6 +6,7 @@
         overflow: hidden;
         position: relative;
     }
+
     .accordion__panel {
         display: flex;
         flex-direction: row;
@@ -15,7 +16,10 @@
         box-sizing: border-box;
         margin: 0;
     }
+
     .accordion__button {
+        height: fit-content;
+        overflow: visible !important;
         writing-mode: vertical-lr;
         text-align: center;
         width: var(--va-desktop-accordion-button-width);
@@ -27,95 +31,129 @@
         position: relative;
         z-index: 2;
         display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1rem 0;
+    }
+
+    .accordion__arrow {
+        height: fit-content;
+    }
+
+    .accordion__button-wrapper {
+        display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100%;
-        padding: 1rem 0 0.5rem 0;
-    }
-    h1.accordion__button-wrapper {
+        flex-direction: column;
         line-height: 0 !important;
         margin: 0 !important;
-        font-size: var(--va-button-desktop-font-size);
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: var(--va-accordion-button-color);
+        cursor: pointer;
     }
+
+    h1.accordion__button-text {
+        line-height: 0 !important;
+        margin: 0 !important;
+        font-family: var(--va-button-font-family, inherit) !important;
+        font-size: var(--va-button-desktop-font-size) !important;
+        text-transform: var(--va-button-text-transform, inherit) !important;
+        letter-spacing: var(--va-button-letter-spacing, inherit) !important;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: var(--va-accordion-button-color) !important;
+        cursor: pointer !important;
+    }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:not(:nth-of-type(1)) .accordion__button-wrapper {
         border-left: var(--va-border-width) solid var(--va-border-color);
     }
+
     span.accordion__arrow {
         display: flex;
     }
+
     .accordion__arrow svg {
         width: var(--va-desktop-icon-size);
         height: var(--va-desktop-icon-size);
         transition: transform 0.3s ease;
         transform: rotate(0deg);
     }
+
     .accordion__panel.active .accordion__arrow svg {
         transform: rotate(90deg);
     }
+
     .accordion__arrow svg path {
         stroke-width: 1.5;
         stroke: var(--va-accordion-button-color);
     }
+
     [data-sdl-plugin="vertical-accordion"] #sections {
         display: grid;
         min-height: 100%;
     }
+
     .accordion__content-wrapper {
         display: block;
         width: 0;
-        /* transition: width 2s ease; */
         overflow: hidden;
         box-sizing: border-box;
         z-index: 1;
     }
+
     .accordion__panel.active {
         z-index: 3;
     }
+
     .accordion__panel.active .accordion__content-wrapper {
         width: calc(100% - var(--va-desktop-accordion-button-width));
-        /* transition: width 2s ease; */
     }
+
     .accordion__content {
-        height: 100% !important;
-        /* width: 100% !important; */
+        width: 100% !important;
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__content .page-section:first-child {
         padding-top: 0 !important;
     }
+
     [data-sdl-plugin="vertical-accordion"] {
         border: var(--va-border-width) solid var(--va-border-color);
         border-radius: var(--va-border-radius);
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(1) .accordion__button-wrapper {
         border-top-left-radius: var(--va-border-radius);
         border-bottom-left-radius: var(--va-border-radius);
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-last-of-type(1) .accordion__button-wrapper {
         border-top-right-radius: var(--va-border-radius);
         border-bottom-right-radius: var(--va-border-radius);
     }
-    [data-sdl-plugin="vertical-accordion"] #sections {
+	 
+  	[data-sdl-plugin="vertical-accordion"] #sections {
         max-height: 90vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
+  
     [data-sdl-plugin="vertical-accordion"] .accordion__content-wrapper {
         flex-grow: 0;
         flex-shrink: 0;
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__content-wrapper {
         width: 0px;
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel.active .accordion__content-wrapper {
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
 
+  
 @media screen and (max-width: 767px) {
     [data-sdl-plugin="vertical-accordion"] {
         max-height: unset !important;
@@ -123,19 +161,23 @@
         border: var(--va-border-width) solid var(--va-border-color);
         border-radius: var(--va-border-radius);
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(1) .accordion__button-wrapper {
         border-top-left-radius: var(--va-border-radius);
         border-top-right-radius: var(--va-border-radius);
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-last-of-type(1) .accordion__button-wrapper {
         border-bottom-left-radius: var(--va-border-radius);
         border-bottom-right-radius: var(--va-border-radius);
     }
+
     .accordion__wrapper {
         display: block;
         width: 100%;
         height: 100%;
     }
+
     .accordion__button {
         display: block;
         width: 100%;
@@ -150,6 +192,7 @@
         padding: 0;
         border-radius: var(--va-border-radius);
     }
+
     h1.accordion__button-wrapper {
         font-size: var(--va-button-mobile-font-size);
         line-height: 0 !important;
@@ -158,33 +201,41 @@
         color: var(--va-accordion-button-color);
         padding: 0 0.5rem;
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:not(:nth-of-type(1)) .accordion__button-wrapper {
         border-top: var(--va-border-width) solid var(--va-border-color);
     }
+
     span.accordion__arrow {
         display: flex;
     }
+
     .accordion__arrow svg {
         width: var(--va-mobile-icon-size);
         height: var(--va-mobile-icon-size);
         transition: transform 0.3s ease;
         transform: rotate(0deg);
     }
+
     .accordion__panel .accordion__arrow svg path {
         stroke-width: 1.5;
         stroke: var(--va-accordion-button-color);
     }
+
     .accordion__panel.active .accordion__arrow svg {
         transform: rotate(180deg);
     }
+
     .accordion__content-wrapper {
         display: none;
         overflow: hidden;
     }
+
     [data-sdl-plugin="vertical-accordion"] #sections {
         display: grid;
         min-height: 100%;
     }
+
     [data-sdl-plugin="vertical-accordion"] .accordion__content .page-section:first-child {
         padding-top: 0 !important;
     }
