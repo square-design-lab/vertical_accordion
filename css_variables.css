@@ -1,0 +1,27 @@
+[data-sdl-plugin="vertical-accordion"] {
+  --va-accordion-button-width: 50px;
+  --va--accordion-button-padding: 12px;
+  --va-accordion-button-color: var(--headingMediumColor);
+  --va-button-background: var(--siteBackgroundColor);
+  --va-button-desktop-font-size: 1.2rem;
+  --va-button-mobile-font-size: 1.1rem;
+  --va-button-text-transform: none;
+  --va-button-line-height: var(--body-font-line-height);
+  --va-button-letter-spacing: 0em;
+  --va-border-color: var(--headingMediumColor);
+  --va-border-width: 1px;
+  --va-desktop-icon-size: 30px;
+  --va-mobile-icon-size: 28px;
+  --va-border-radius: 0px;
+  
+  --va-tab-1-background: var(--siteBackgroundColor);
+  --va-tab-2-background: var(--siteBackgroundColor);
+  --va-tab-3-background: var(--siteBackgroundColor);
+  --va-tab-4-background: var(--siteBackgroundColor);
+  --va-tab-5-background: var(--siteBackgroundColor);
+  --va-tab-6-background: var(--siteBackgroundColor);
+  --va-tab-7-background: var(--siteBackgroundColor);
+  --va-tab-8-background: var(--siteBackgroundColor);
+  --va-tab-9-background: var(--siteBackgroundColor);
+  --va-tab-10-background: var(--siteBackgroundColor);
+}
