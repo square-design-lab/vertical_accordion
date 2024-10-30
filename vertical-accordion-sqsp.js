@@ -198,26 +198,26 @@ $(document).ready(function () {
     }
   
     function bindAccordionClickEvents(accordionWrapper, accordionDiv, slidesCount) {
-		accordionWrapper.find('.accordion__button-wrapper').off('click').on('click', function () {
+	accordionWrapper.find('.accordion__button-wrapper').off('click').on('click', function () {
 		var clickedPanel = $(this).closest('.accordion__panel');
         	var isActive = clickedPanel.hasClass('active');
         
         	if (!isActive) {
-            	accordionWrapper.find('.accordion__panel.active').each(function () {
-                	var currentPanel = $(this);
-                	currentPanel.removeClass('active');
-                	var contentWrapperToHide = currentPanel.find('.accordion__content-wrapper');
-                	contentWrapperToHide.stop(true, true).css('width', '0').hide();
-            	});
+            		accordionWrapper.find('.accordion__panel.active').each(function () {
+                		var currentPanel = $(this);
+                		currentPanel.removeClass('active');
+                		var contentWrapperToHide = currentPanel.find('.accordion__content-wrapper');
+                		contentWrapperToHide.stop(true, true).css('width', '0').hide();
+            		});
    			
-            clickedPanel.addClass('active');
-            var contentWrapper = clickedPanel.find('.accordion__content-wrapper');
-            contentWrapper.show(); 
-            var targetWidth = setAccordionContentWidth(accordionDiv, slidesCount);
-            contentWrapper.stop(true, true).animate({ width: targetWidth }, 500);
-        }
-    });
-}
+            		clickedPanel.addClass('active');
+            		var contentWrapper = clickedPanel.find('.accordion__content-wrapper');
+            		contentWrapper.show(); 
+            		var targetWidth = setAccordionContentWidth(accordionDiv, slidesCount);
+            		contentWrapper.stop(true, true).animate({ width: targetWidth }, 500);
+        	}
+    	});
+    }
 
     function resizeAccordion(section, slidesCount) {
         var accordionDiv = section.find('[data-sdl-plugin="vertical-accordion"][data-content-source]');
