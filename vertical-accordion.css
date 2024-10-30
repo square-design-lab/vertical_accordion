@@ -15,6 +15,7 @@
         padding: 0;
         box-sizing: border-box;
         margin: 0;
+        position: relative;
     }
 
     .accordion__button {
@@ -22,8 +23,7 @@
         overflow: visible !important;
         writing-mode: vertical-lr;
         text-align: center;
-        width: var(--va-desktop-accordion-button-width);
-        background-color: var(--va-button-background);
+        width: var(--va-accordion-button-width);
         padding: 0;
         border: none;
         margin: 0;
@@ -93,24 +93,8 @@
         min-height: 100%;
     }
 
-    .accordion__content-wrapper {
-        display: block;
-        width: 0;
-        overflow: hidden;
-        box-sizing: border-box;
-        z-index: 1;
-    }
-
     .accordion__panel.active {
         z-index: 3;
-    }
-
-    .accordion__panel.active .accordion__content-wrapper {
-        width: calc(100% - var(--va-desktop-accordion-button-width));
-    }
-
-    .accordion__content {
-        width: 100% !important;
     }
 
     [data-sdl-plugin="vertical-accordion"] .accordion__content .page-section:first-child {
@@ -132,19 +116,18 @@
         border-bottom-right-radius: var(--va-border-radius);
     }
 	 
-  	[data-sdl-plugin="vertical-accordion"] #sections {
+    [data-sdl-plugin="vertical-accordion"] #sections {
         max-height: 90vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
   
-    [data-sdl-plugin="vertical-accordion"] .accordion__content-wrapper {
+    [data-sdl-plugin="vertical-accordion"] .accordion__content-wrapper { 
+        overflow: hidden;
+        box-sizing: border-box;
+        z-index: 1;
         flex-grow: 0;
         flex-shrink: 0;
-    }
-
-    [data-sdl-plugin="vertical-accordion"] .accordion__content-wrapper {
-        width: 0px;
     }
 
     [data-sdl-plugin="vertical-accordion"] .accordion__panel.active .accordion__content-wrapper {
@@ -152,7 +135,7 @@
         overflow-x: hidden;
     }
 }
-
+  
   
 @media screen and (max-width: 767px) {
     [data-sdl-plugin="vertical-accordion"] {
@@ -189,17 +172,35 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0;
         border-radius: var(--va-border-radius);
     }
 
-    h1.accordion__button-wrapper {
-        font-size: var(--va-button-mobile-font-size);
+    .accordion__button-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        gap: 0.5rem;
         line-height: 0 !important;
         margin: 0 !important;
-        height: var(--va-mobile-accordion-button-width);
-        color: var(--va-accordion-button-color);
-        padding: 0 0.5rem;
+        padding: var(--va--accordion-button-padding);
+        cursor: pointer;
+        height: auto;
+    }
+    
+    h1.accordion__button-text {
+        line-height: var(--va-button-line-height) !important;
+        margin: 0 !important;
+        font-family: var(--va-button-font-family, inherit) !important;
+        font-size: var(--va-button-mobile-font-size) !important;
+        text-transform: var(--va-button-text-transform, inherit) !important;
+        letter-spacing: var(--va-button-letter-spacing, inherit) !important;
+        color: var(--va-accordion-button-color) !important;
+        cursor: pointer !important;
+        text-overflow: ellipsis;
+        white-space: normal; 
+        word-wrap: break-word; 
+        overflow-wrap: break-word;
     }
 
     [data-sdl-plugin="vertical-accordion"] .accordion__panel:not(:nth-of-type(1)) .accordion__button-wrapper {
