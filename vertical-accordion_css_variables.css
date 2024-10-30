@@ -14,6 +14,12 @@
   --va-mobile-icon-size: 28px;
   --va-border-radius: 0px;
   
+  --va-button-hover-background: var(--siteBackgroundColor);
+  --va-button-hover-color: var(--headingMediumColor);
+  
+  --va-active-panel-button-background: var(--siteBackgroundColor);
+  --va-active-panel-button-color: var(--headingMediumColor);
+  
   --va-tab-1-background: var(--siteBackgroundColor);
   --va-tab-2-background: var(--siteBackgroundColor);
   --va-tab-3-background: var(--siteBackgroundColor);
