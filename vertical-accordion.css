@@ -1,3 +1,51 @@
+[data-sdl-plugin="vertical-accordion"] .accordion__panel .accordion__button-wrapper {
+    background-color: var(--va-button-background);
+}   
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(1) .accordion__button-wrapper {
+	background-color: var(--va-tab-1-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(2) .accordion__button-wrapper {
+    background-color: var(--va-tab-2-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(3) .accordion__button-wrapper {
+	background-color: var(--va-tab-3-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(4) .accordion__button-wrapper {
+	background-color: var(--va-tab-4-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(5) .accordion__button-wrapper {
+    background-color: var(--va-tab-5-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(6) .accordion__button-wrapper {
+    background-color: var(--va-tab-6-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(7) .accordion__button-wrapper {
+    background-color: var(--va-tab-7-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(8) .accordion__button-wrapper {
+    background-color: var(--va-tab-8-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(9) .accordion__button-wrapper {
+    background-color: var(--va-tab-9-background);
+}
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(10) .accordion__button-wrapper {
+    background-color: var(--va-tab-10-background);
+}
+
+[data-sdl-plugin="vertical-accordion"] .accordion__panel:not(.active) .accordion__button-wrapper:hover, [data-sdl-plugin="vertical-accordion"] .accordion__panel:not(.active) .accordion__button-wrapper:hover .accordion__button {
+	background-color: var(--va-button-hover-background);
+	color: var(--va-button-hover-color);
+}
+  
+[data-sdl-plugin="vertical-accordion"] .accordion__panel.active .accordion__button-wrapper {
+	background-color: var(--va-active-panel-button-background);
+}
+    
+[data-sdl-plugin="vertical-accordion"] .accordion__panel.active .accordion__button-wrapper h1.accordion__button-text {
+	color: var(--va-active-panel-button-color) !important;
+}
+
+
 @media screen and (min-width: 768px) {
     .accordion__wrapper {
         display: flex;
