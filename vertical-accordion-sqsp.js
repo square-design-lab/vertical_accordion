@@ -69,7 +69,7 @@ $(document).ready(function () {
                             var totalButtonHeight = buttonHeight + arrowHeight;
                             buttonMaxHeight = Math.max(buttonMaxHeight, totalButtonHeight);
 
-                          	if (calculatedHeight < contentWrapper.outerHeight(true)) {
+                            if (calculatedHeight < contentWrapper.outerHeight(true)) {
                                 contentDiv.css('height', '100%');
                             }
                           
@@ -78,7 +78,7 @@ $(document).ready(function () {
                                 tallestPanel = accordionPanel;
                             }
                            
-							setAccordionContentWidth(accordionDiv, slidesCount);
+			    setAccordionContentWidth(accordionDiv, slidesCount);
                           
                             contentWrapper.css({
                                 'height': calculatedHeight + 'px',
@@ -119,15 +119,15 @@ $(document).ready(function () {
         });
     }
 
-	function setAccordionContentWidth(accordionDiv, slidesCount) {
-      var buttonWidth = parseFloat(getComputedStyle(accordionDiv[0]).getPropertyValue('--va-accordion-button-width'));
-      var accordionTotalWidth = accordionDiv.width();
-      var calculatedContentWidth = accordionTotalWidth - (slidesCount * buttonWidth);
-      var contentWrapper = accordionDiv.find('.accordion__content');
-      var accordionContent = accordionDiv.find('.accordion__content');
-      accordionContent.css('width', calculatedContentWidth + 'px');
-      return calculatedContentWidth;
-	}
+    function setAccordionContentWidth(accordionDiv, slidesCount) {
+	var buttonWidth = parseFloat(getComputedStyle(accordionDiv[0]).getPropertyValue('--va-accordion-button-width'));
+	var accordionTotalWidth = accordionDiv.width();
+	var calculatedContentWidth = accordionTotalWidth - (slidesCount * buttonWidth);
+	var contentWrapper = accordionDiv.find('.accordion__content');
+	var accordionContent = accordionDiv.find('.accordion__content');
+	accordionContent.css('width', calculatedContentWidth + 'px');
+	return calculatedContentWidth;
+    }
 
     function setAccordionHeight(accordionWrapper, maxHeight, buttonMaxHeight, openSlideAttr, accordionDiv, slidesCount) {
         accordionWrapper.find('.accordion__panel').each(function (index) {
@@ -184,7 +184,7 @@ $(document).ready(function () {
 
             if (index + 1 === openSlideAttr) {
                 panel.addClass('active');
-			    contentWrapper.show();
+		contentWrapper.show();
                 var targetWidth = setAccordionContentWidth(accordionDiv, slidesCount);
                 contentWrapper.stop(true, true).animate({ width: targetWidth }, 500);
             } else {
@@ -199,7 +199,7 @@ $(document).ready(function () {
   
     function bindAccordionClickEvents(accordionWrapper, accordionDiv, slidesCount) {
 		accordionWrapper.find('.accordion__button-wrapper').off('click').on('click', function () {
-			var clickedPanel = $(this).closest('.accordion__panel');
+		var clickedPanel = $(this).closest('.accordion__panel');
         	var isActive = clickedPanel.hasClass('active');
         
         	if (!isActive) {
@@ -237,9 +237,9 @@ $(document).ready(function () {
             hiddenDiv.remove();
             maxHeight = Math.max(maxHeight, calculatedHeight);
 
-           contentWrapper.stop(true, true).css('width', 'calc(100% - var(--va-accordion-button-width))');
+            contentWrapper.stop(true, true).css('width', 'calc(100% - var(--va-accordion-button-width))');
           
-			var buttonWrapper = $(this).find('.accordion__button-wrapper');
+	    var buttonWrapper = $(this).find('.accordion__button-wrapper');
             var button = buttonWrapper.find('.accordion__button');
             button.css('white-space', 'nowrap');
             buttonWrapper.css('width', '100%');
@@ -325,31 +325,31 @@ $(document).ready(function () {
     
     var isDesktopInitialized = false;
 
-	function checkScreenSizeAndInitialize() {
+    function checkScreenSizeAndInitialize() {
     	if ($(window).width() > 767) {
         	if (!isDesktopInitialized) {
-            	$('.accordion__wrapper').css({
-                	'opacity': '0',
-                	'transition': 'all 0.5s ease'
-            	});
+            		$('.accordion__wrapper').css({
+                		'opacity': '0',
+                		'transition': 'all 0.5s ease'
+            		});
 
-            	$('.accordion__wrapper').remove();
-            	initializeDesktopAccordion();
+            		$('.accordion__wrapper').remove();
+            		initializeDesktopAccordion();
 
-            	setTimeout(function() {
-                	$('.accordion__wrapper').css({
-                    	'opacity': '1'
-                	});
-            	}, 50);
+            		setTimeout(function() {
+                		$('.accordion__wrapper').css({
+                    			'opacity': '1'
+                		});
+            		}, 50);
 
-            	isDesktopInitialized = true;
+            		isDesktopInitialized = true;
         	}
     	} else {
         	isDesktopInitialized = false;
         	$('.accordion__wrapper').remove();
         	initializeMobileAccordion();
     	}
-	}
+    }
 
     checkScreenSizeAndInitialize();
   
