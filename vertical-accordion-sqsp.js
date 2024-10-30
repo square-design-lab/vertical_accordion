@@ -196,14 +196,14 @@ $(document).ready(function () {
         
         accordionWrapper.css('visibility', 'visible');
     }
-  
+    
     function bindAccordionClickEvents(accordionWrapper, accordionDiv, slidesCount) {
-	accordionWrapper.find('.accordion__button-wrapper').off('click').on('click', function () {
+	    accordionWrapper.find('.accordion__button-wrapper').off('click').on('click', function () {
 		var clickedPanel = $(this).closest('.accordion__panel');
         	var isActive = clickedPanel.hasClass('active');
         
         	if (!isActive) {
-            		accordionWrapper.find('.accordion__panel.active').each(function () {
+			accordionWrapper.find('.accordion__panel.active').each(function () {
                 		var currentPanel = $(this);
                 		currentPanel.removeClass('active');
                 		var contentWrapperToHide = currentPanel.find('.accordion__content-wrapper');
@@ -216,7 +216,7 @@ $(document).ready(function () {
             		var targetWidth = setAccordionContentWidth(accordionDiv, slidesCount);
             		contentWrapper.stop(true, true).animate({ width: targetWidth }, 500);
         	}
-    	});
+	    });
     }
 
     function resizeAccordion(section, slidesCount) {
