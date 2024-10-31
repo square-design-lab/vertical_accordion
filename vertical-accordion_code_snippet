@@ -1,1 +1,7 @@
+<!-- Add Inside Code Block -->
 <div data-sdl-plugin="vertical-accordion" data-content-source="/portfolio" data-slides-count="4" data-open-slide="2"></div>
+
+<!-- Vertical Accordion CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/square-design-lab/vertical_accordion@refs/heads/main/vertical-accordion-sqsp.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/square-design-lab/vertical_accordion@refs/heads/main/vertical-accordion.css" />
