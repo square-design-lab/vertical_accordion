@@ -5,7 +5,7 @@
 	background-color: var(--va-tab-1-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(2) .accordion__button-wrapper {
-    background-color: var(--va-tab-2-background);
+	background-color: var(--va-tab-2-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(3) .accordion__button-wrapper {
 	background-color: var(--va-tab-3-background);
@@ -14,22 +14,22 @@
 	background-color: var(--va-tab-4-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(5) .accordion__button-wrapper {
-    background-color: var(--va-tab-5-background);
+	background-color: var(--va-tab-5-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(6) .accordion__button-wrapper {
-    background-color: var(--va-tab-6-background);
+	background-color: var(--va-tab-6-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(7) .accordion__button-wrapper {
-    background-color: var(--va-tab-7-background);
+	background-color: var(--va-tab-7-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(8) .accordion__button-wrapper {
-    background-color: var(--va-tab-8-background);
+	background-color: var(--va-tab-8-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(9) .accordion__button-wrapper {
-    background-color: var(--va-tab-9-background);
+	background-color: var(--va-tab-9-background);
 }
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(10) .accordion__button-wrapper {
-    background-color: var(--va-tab-10-background);
+	background-color: var(--va-tab-10-background);
 }
 
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:not(.active) .accordion__button-wrapper:hover, [data-sdl-plugin="vertical-accordion"] .accordion__panel:not(.active) .accordion__button-wrapper:hover .accordion__button {
