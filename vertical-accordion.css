@@ -1,5 +1,5 @@
 [data-sdl-plugin="vertical-accordion"] .accordion__panel .accordion__button-wrapper {
-    background-color: var(--va-button-background);
+	background-color: var(--va-button-background);
 }   
 [data-sdl-plugin="vertical-accordion"] .accordion__panel:nth-of-type(1) .accordion__button-wrapper {
 	background-color: var(--va-tab-1-background);
